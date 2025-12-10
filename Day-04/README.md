@@ -3,7 +3,7 @@
 <b><h1>Terraform State Management</h1></b>
 </p>
 
-we will explore the Terraform state file and key concepts.
+We will explore the Terraform state file and key concepts.
 
 🚀 Terraform state file importance.
 
@@ -38,6 +38,7 @@ Once all configuration files are created, execute the terraform init command. It
 
 If an S3 backend is specified as remote backend, it stores the state file in the S3 bucket defined in the backend block. This backend configuration enables team collaboration and avoids issues caused by local machine failures.
 
+```
 terraform {
   required_providers {
     aws = {
@@ -47,17 +48,21 @@ terraform {
   }
   
   backend "s3" {
-  bucket = "terraform-practice-state-management"
-  region = "us-east-1"
-  key = "dev/terraform.tfstate"
-  use_lockfile = true
-  profile = "personal-account"
+      bucket = "terraform-practice-state-management"
+      region = "us-east-1"
+      key = "dev/terraform.tfstate"
+      use_lockfile = true
+      profile = "personal-account"
   }
 
   required_version = "1.14.0"
 }
+```
 
-State locking purpose:
+<!-- Center and Bold Title -->
+<p align="center">
+<b><h3>State locking purpose</h3></b>
+</p>
 State locking prevents concurrent modifications when multiple team members run Terraform simultaneously, avoiding state file corruption. Without locking (enabled by most remote backends), parallel operations can corrupt state, making infrastructure unmanageable despite existing cloud resources.
 
 State locking feature is now available in S3 bucket itself, no need Dynamo DB table.
