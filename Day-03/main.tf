@@ -13,6 +13,7 @@ provider "aws" {
     profile = "personal-account"
 }
 
+#VPC creation
 resource "aws_vpc" "terraform_practice_vpc" {
     region = "us-east-1"          # It will override if region mentioned in the provider block.
     cidr_block = "172.25.0.0/24"
@@ -26,9 +27,10 @@ resource "aws_vpc" "terraform_practice_vpc" {
     }
 }
 
+#S3 bucket creation
 resource "aws_s3_bucket" "data_bucket" {
-    bucket = "terraform-practice-bucket-data"
-    force_destroy = true
+    bucket = "terraform-practice-bucket-data-${aws_vpc.terraform_practice_vpc.id}"  #implicit dependency
+    force_destroy = true  #It will destroy the bucket even the bucket has object while terraform destroy.
     tags = {
         Name = "Terraform-Practice-Data-Bucket"
         Environment = "Development"
