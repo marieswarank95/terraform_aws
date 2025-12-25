@@ -38,7 +38,7 @@ resource "aws_elastic_beanstalk_application_version" "green_env_version" {
     application = aws_elastic_beanstalk_application.eb_web_app.name
     bucket = aws_s3_bucket.eb_source_code.id
     key = "app_v2.zip"
-    name = "green_version-v2"
+    name = "green_version_v2"
     depends_on = [aws_s3_object.s3_obj_upload]
 }
 

@@ -159,6 +159,7 @@ resource "aws_s3_bucket_notification" "s3_lambda_notify" {
         events = ["s3:ObjectCreated:*"]
         lambda_function_arn = aws_lambda_function.image_processing.arn
     }
+    depends_on = [aws_lambda_permission.image_processing]
 }
 
 #lambda permission for S3 bucket to invoke lambda function
