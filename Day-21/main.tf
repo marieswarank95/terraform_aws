@@ -1,3 +1,4 @@
+#To get account id
 data "aws_caller_identity" "current" {
 }
 
@@ -263,6 +264,10 @@ resource "aws_iam_user" "tf_test_user" {
     name = "terraform-test-user"
 }
 
+resource "aws_iam_user_login_profile" "tf_test_user" {
+    user = aws_iam_user.tf_test_user.id
+}
+
 resource "aws_iam_user_policy_attachment" "tf_test_user_mfa" {
     user = aws_iam_user.tf_test_user.id
     policy_arn = aws_iam_policy.enforce_s3_delete_obj_withmfa.arn
@@ -278,8 +283,14 @@ resource "aws_iam_user_policy_attachment" "tf_test_user_ec2_tags" {
     policy_arn = aws_iam_policy.enforce_ec2_tag.arn
 }
 
-resource "aws_iam_user_login_profile" "tf_test_user" {
+resource "aws_iam_user_policy_attachment" "tf_test_user_ec2_access" {
     user = aws_iam_user.tf_test_user.id
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "tf_test_user_s3_access" {
+    user = aws_iam_user.tf_test_user.id
+    policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 resource "aws_iam_role" "config" {
